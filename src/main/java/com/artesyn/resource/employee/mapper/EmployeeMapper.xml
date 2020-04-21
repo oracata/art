@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.artesyn.resource.employee.mapper.EmployeeMapper">
+	
+	<resultMap type="com.artesyn.resource.employee.entity.Employee" id="BaseEmployee">
+		<id property="eid" column="eid"/>
+		<result property="ename" column="ename"/>
+		<result property="cardId" column="card_id"/>
+		<result property="address" column="address"/>
+		<result property="postCode" column="post_code"/>
+		<result property="tel" column="tel"/>
+		<result property="phone" column="phone"/>
+		<result property="qqNum" column="qq_num"/>
+		<result property="email" column="email"/>
+		<result property="sex" column="sex"/>
+		<result property="party" column="party"/>
+		<result property="birthday" column="birthday" jdbcType="DATE"/>
+		<result property="race" column="race"/>
+		<result property="education" column="education"/>
+		<result property="speciality" column="speciality"/>
+		<result property="hobby" column="hobby"/>
+		<result property="createDate" column="create_date"/>
+		<result property="remark" column="remark"/>
+		<result property="did" column="did"/>
+		<result property="jid" column="jid"/>
+		<association property="dept" javaType="com.artesyn.resource.dept.entity.Dept" column="did"
+		select="com.artesyn.resource.dept.mapper.DeptMapper.getById">
+			<id property="did" column="did"/>
+			<result property="dname" column="dname"/>
+			<result property="dremark" column="dremark"/>
+		</association>
+		<association property="job" javaType="com.artesyn.resource.job.entity.Job" column="jid"
+		select="com.artesyn.resource.job.mapper.JobMapper.getById">
+			<id property="jid" column="jid"/>
+			<result property="jname" column="jname"/>
+			<result property="jremark" column="jremark"/>
+		</association>
+	</resultMap>
+
+	<select id="getById" resultMap="BaseEmployee">
+		select * from t_employee where eid=#{id}
+	</select>
+	<select id="getAll" resultMap="BaseEmployee">
+		select * from t_employee
+	</select>
+	
+	<select id="getByCondition" resultMap="BaseEmployee">
+		select * from t_employee
+		<where>
+			<if test="ename!= null and ename!= ''">
+				and ename=#{ename}
+			</if>
+			<if test="cardId!= null and cardId != ''">
+				and card_id=#{cardId}
+			</if>
+			<if test="sex!= null">
+				and sex=#{sex}
+			</if>
+			<if test="did!= null and did != ''">
+				and did=#{did}
+			</if>
+			<if test="jid!= null and jid!=''">
+				and jid=#{jid}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add">
+		insert into t_employee(eid,ename,card_id,address,post_code,tel,phone,qq_num,email,sex,party,
+		birthday,race,education,speciality,hobby,create_date,remark,did,jid) values(#{eid},#{ename},
+		#{cardId},#{address},#{postCode},#{tel},#{phone},#{qqNum},#{email},#{sex},#{party},#{birthday},
+		#{race},#{education},#{speciality},#{hobby},#{createDate},#{remark},#{did},#{jid})
+	</insert>
+	<delete id="delete">
+		delete from t_employee where eid=#{id}
+	</delete>
+	<delete id="batchDelete">
+		delete from t_employee where eid in
+		 <foreach item="id" collection="eids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+	</delete>
+	<update id="update">
+		update t_employee set ename=#{ename},card_id=#{cardId},address=#{address},post_code=#{postCode},
+		tel=#{tel},phone=#{phone},qq_num=#{qqNum},email=#{email},sex=#{sex},party=#{party},birthday=#{birthday},
+		race=#{race},education=#{education},speciality=#{speciality},hobby=#{hobby},remark=#{remark},did=#{did},
+		jid=#{jid} where eid=#{eid}
+	</update>
+</mapper>

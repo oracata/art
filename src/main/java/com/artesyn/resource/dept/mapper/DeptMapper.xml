@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.artesyn.resource.dept.mapper.DeptMapper">
+	<select id="getById" resultType="com.artesyn.resource.dept.entity.Dept">
+		select did,dname,dremark from t_dept where did=#{id}
+	</select>
+	<select id="getAll" resultType="com.artesyn.resource.dept.entity.Dept">
+		select did,dname,dremark from t_dept
+	</select>
+	<insert id="add">
+		insert into t_dept(dname,dremark) values(#{dname},#{dremark})
+	</insert>
+	<delete id="delete">
+		delete from t_dept where did=#{id}
+	</delete>
+	<update id="update">
+		update t_dept set dname=#{dname},dremark=#{dremark} where did=#{did}
+	</update>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.artesyn.resource.notice.mapper.NoticeMapper">
+	
+	<resultMap type="com.artesyn.resource.notice.entity.Notice" id="BaseNotice">
+		<id property="nid" column="nid"/>
+		<result property="title" column="title"/>
+		<result property="content" column="content"/>
+		<result property="status" column="status"/>
+		<result property="createDate" column="create_date"/>
+		<result property="publishDate" column="publishDate"/>
+		<result property="uid" column="uid"/>
+		<result property="remark" column="remark"/>
+		<association property="user" javaType="com.artesyn.resource.user.entity.User" column="uid"
+		select="com.artesyn.resource.user.mapper.UserMapper.getUserById">
+			<id property="uid" column="uid"/>
+			<result property="username" column="username"/>
+			<result property="loginname" column="loginname"/>
+			<result property="password" column="password"/>
+			<result property="status" column="status"/>
+			<result property="remark" column="remark"/>
+		</association>
+	</resultMap>
+	
+	<select id="getById" resultMap="BaseNotice">
+		select * from t_notice where nid=#{id}
+	</select>
+	<select id="getAll" resultMap="BaseNotice">
+		select * from t_notice
+	</select>
+	<select id="getByCondition" resultMap="BaseNotice">
+		select * from t_notice
+		<where>
+			<if test="uid!=null">
+				and uid=#{uid}
+			</if>
+			<if test="title!=null and title!=''">
+				and title=#{title}
+			</if>
+			<if test="content!=null and content!=''">
+				and content=#{content}
+			</if>
+			<if test="status!=null">
+				and status=#{status}
+			</if>
+		</where>
+	</select>
+	<insert id="add">
+		insert into t_notice(title,content,status,publishDate,remark,uid) values
+		(#{title},#{content},#{status},#{publishDate},#{remark},#{uid})
+	</insert>
+	<delete id="delete">
+		delete from t_notice where nid=#{id}
+	</delete>
+	<delete id="batchDelete">
+		delete from t_notice where nid in 
+		<foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+	</delete>
+	<update id="update">
+		update t_notice set title=#{title},content=#{content},publishDate=#{publishDate},status=#{status},
+		remark=#{remark} where nid=#{nid} 
+	</update>
+	<update id="publish">
+		update t_notice set publishDate=#{publishDate},status=#{status} where nid=#{nid} 
+	</update>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.artesyn.resource.job.mapper.JobMapper">
+	<select id="getById" resultType="com.artesyn.resource.job.entity.Job">
+		select jid,jname,jremark from t_job where jid=#{id}
+	</select>
+	<select id="getAll" resultType="com.artesyn.resource.job.entity.Job">
+		select jid,jname,jremark from t_job
+	</select>
+	<insert id="add">
+		insert into t_job(jname,jremark) values(#{jname},#{jremark})
+	</insert>
+	<delete id="delete">
+		delete from t_job where jid=#{id}
+	</delete>
+	<update id="update">
+		update t_job set jname=#{jname},jremark=#{jremark} where jid=#{jid}
+	</update>
+</mapper>

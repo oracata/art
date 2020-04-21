@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.artesyn.resource.file.mapper.DocumentMapper">
+	<resultMap type="com.artesyn.resource.file.entity.Document" id="BaseDocument">
+		<id property="did" column="did"/>
+		<result property="title" column="title"/>
+		<result property="filename" column="filename"/>
+		<result property="description" column="description"/>
+		<result property="createDate" column="create_date"/>
+		<result property="uid" column="uid"/>
+		<association property="user" javaType="com.artesyn.resource.user.entity.User" 
+		column="uid" select="com.artesyn.resource.user.mapper.UserMapper.getUserById">
+			<id property="uid" column="uid"/>
+			<result property="username" column="username"/>
+			<result property="loginname" column="loginname"/>
+			<result property="password" column="password"/>
+			<result property="status" column="status"/>
+			<result property="remark" column="remark"/>
+		</association>
+	</resultMap>
+	<select id="getById" resultMap="BaseDocument">
+		select * from t_document where did=#{id}
+	</select>
+	<select id="getAllByCondition" resultMap="BaseDocument">
+		select * from t_document 
+		<where>
+			<if test="did!=null">
+				and did=#{id}
+			</if>
+			<if test="title!=null and title!=''">
+				and title=#{title}
+			</if>
+			<if test="filename!=null and filename!=''">
+				and filename=#{filename}
+			</if>
+			<if test="description!=null and description!=''">
+				and like concat(concat('%',#{description}),'%')
+			</if>
+			<if test="remark!=null and remark!=''">
+				and remark=#{remark}
+			</if>
+			<if test="uid!=null">
+				uid=#{uid}
+			</if>
+		</where>
+	</select>
+	<select id="getAll" resultMap="BaseDocument">
+		select * from t_document
+	</select>
+	<insert id="add">
+		insert into t_document(title,filename,description,remark,uid) values(#{title},#{filename},
+		#{description},#{remark},#{uid})
+	</insert>
+	<delete id="delete">
+		delete from t_document where did=#{id}
+	</delete>
+	<update id="update">
+		update t_document set title=#{title},filename=#{filename}
+		,description=#{description},remark=#{remark} where did=#{did}
+	</update>
+	<update id="updateByCondition">
+		update t_document
+		<set>
+			<if test="title!=null and title!=''">
+				 title=#{title},
+			</if>
+			<if test="filename!=null and filename!=''">
+				 filename=#{filename},
+			</if>
+			<if test="description!=null and description!=''">
+				 description=#{description},
+			</if>
+			<if test="remark!=null and remark!=''">
+				 remark=#{remark}
+			</if>
+		</set>
+		where did=#{did}
+	</update>
+</mapper>

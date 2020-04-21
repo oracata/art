@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.artesyn.resource.user.mapper.UserMapper">
+	
+	<!-- 根据登录名查询用户 -->
+	<select id="login" resultType="com.artesyn.resource.user.entity.User">
+		select uid,loginname,password,status,createdate,username,remark 
+		from t_user where loginname=#{loginname}
+	</select>
+	<!-- 根据id获取用户 -->
+	<select id="getUserById" resultType="com.artesyn.resource.user.entity.User">
+		select uid,loginname,password,status,createdate,username,remark 
+		from t_user where uid=#{id}
+	</select>
+	<!-- 查询所有用户 -->
+	<select id="getUsersByPage" resultType="com.artesyn.resource.user.entity.User">
+		select uid,loginname,password,status,createdate,username,remark 
+		from t_user
+	</select>
+	<!-- 根据loginname查询用户 -->
+	<select id="getUserByName" resultType="com.artesyn.resource.user.entity.User">
+		select uid,loginname,password,status,createdate,username,remark 
+		from t_user where loginname=#{loginname}
+	</select>
+	<!-- 添加用户 -->
+	<insert id="addUser">
+		insert into t_user(loginname,password,username,remark)
+		values(#{loginname},#{password},#{username},#{remark})
+	</insert>
+	<!-- 删除用户 -->
+	<delete id="deleteUserById">
+		delete from t_user where uid=#{id}
+	</delete>
+	<!-- 修改用户-->
+	<update id="updateUser">
+		update t_user set loginname=#{loginname},password=#{password},
+		status=#{status},username=#{username},remark=#{remark} where uid=#{uid}
+	</update>
+</mapper>
